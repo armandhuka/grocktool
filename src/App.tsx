@@ -1,9 +1,17 @@
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
+import { useEffect } from "react";
 import Index from "./pages/Index";
 import About from "./pages/About";
 // import Content from "./pages/Content";
@@ -77,6 +85,43 @@ import MacroSplitter from "./pages/health-tools/MacroSplitter";
 
 const queryClient = new QueryClient();
 
+const GA_MEASUREMENT_ID = "G-495704318";
+
+function loadGAScript() {
+  if (!window.dataLayer) {
+    window.dataLayer = [];
+  }
+  function gtag(...args: any[]) { window.dataLayer.push(args); }
+  window.gtag = gtag;
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID, { send_page_view: false });
+  
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  document.head.appendChild(script);
+}
+
+function GATracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!window.gtag) {
+      loadGAScript();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.gtag) {
+      window.gtag('event', 'page_view', {
+        page_path: location.pathname + location.search,
+      });
+    }
+  }, [location]);
+
+  return null;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <HelmetProvider>
@@ -84,6 +129,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <GATracker />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />

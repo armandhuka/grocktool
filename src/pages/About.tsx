@@ -176,7 +176,7 @@ const About = () => {
               </h2>
               <p className="text-toolnest-text/80 text-lg leading-relaxed mb-8">
                 We aim to keep expanding, refining, and simplifying your interaction with tools — one click at a time. 
-                ToolNest will continue growing to become the ultimate destination for all your digital tool needs.
+                GrockTool will continue growing to become the ultimate destination for all your digital tool needs.
               </p>
               
               <motion.button

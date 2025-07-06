@@ -615,7 +615,7 @@ const Index = () => {
               Trusted by Thousands of Developers
             </h2>
             <p className="text-toolnest-text/80 text-lg mb-8">
-              Join our community of users who rely on ToolNest for their daily workflow
+              Join our community of users who rely on GrockTool for their daily workflow
             </p>
             <div className="flex justify-center items-center gap-8 flex-wrap">
               <div className="text-center">
